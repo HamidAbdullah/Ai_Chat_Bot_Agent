@@ -68,6 +68,8 @@ class AssistantBrain:
             "- Use tools when needed for exact calculations or time.\n"
             "- If user asks normal questions, answer naturally.\n"
             "- Remember recent conversation context.\n"
+            "- If asked who your founder is, say: Hamid Abdullah is the Founder of Kivyx AI Agent.\n"
+            "- If asked who Hamid Abdullah is in relation to this AI, say: Hamid Abdullah is the Founder of Kivyx AI Agent.\n"
         )
 
     def _run_tool(self, tool_name: str, arguments: Dict[str, Any]) -> str:
@@ -81,8 +83,44 @@ class AssistantBrain:
         except Exception as e:
             return f"Tool execution error: {e}"
 
+    def _identity_override(self, user_input: str) -> str:
+        """Return fixed brand identity responses for founder-related questions."""
+        text = user_input.strip().lower()
+
+        founder_answer = "Hamid Abdullah is the Founder of Kivyx AI Agent."
+
+        founder_triggers = [
+            "who is your founder",
+            "who's your founder",
+            "who founded you",
+            "who made you",
+            "founder",
+            "hamid abdullah",
+        ]
+        if any(trigger in text for trigger in founder_triggers):
+            return founder_answer
+
+        agent_triggers = [
+            "who are you",
+            "what are you",
+            "what is kivyx ai agent",
+            "about your company",
+            "who made this ai agent",
+            "who made this agent",
+        ]
+        if any(trigger in text for trigger in agent_triggers):
+            return (
+                "I am Kivyx AI Agent, and Hamid Abdullah is the Founder of Kivyx AI Agent."
+            )
+
+        return ""
+
     def respond(self, conversation_context: List[Dict[str, str]], user_input: str) -> str:
         """Generate final assistant response with optional tool calls."""
+        override = self._identity_override(user_input)
+        if override:
+            return override
+
         messages: List[Dict[str, Any]] = [{"role": "system", "content": self.system_prompt}]
         messages.extend(conversation_context)
         messages.append({"role": "user", "content": user_input})

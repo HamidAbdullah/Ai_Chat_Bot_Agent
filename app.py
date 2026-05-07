@@ -48,14 +48,14 @@ if "ai_avatar" not in st.session_state:
     st.session_state.ai_avatar = "🤖"
 
 with st.sidebar:
-    st.markdown("## 💬 Chats")
-    st.caption("Groq + Streamlit smart assistant")
+    st.markdown("## Kivyx AI Agent")
+    st.caption("ChatGPT-style assistant")
 
-    if st.button("➕ New Chat", use_container_width=True):
+    if st.button("New Chat", use_container_width=True):
         st.session_state.chat_id = memory.create_new_chat()
         st.rerun()
 
-    if st.button("🧹 Clear Current Chat", use_container_width=True):
+    if st.button("Clear Chat", use_container_width=True):
         memory.clear_chat(st.session_state.chat_id)
         st.rerun()
 
@@ -71,7 +71,7 @@ with st.sidebar:
 
     for sid, session in sorted_sessions[:15]:
         title = session.get("title", "Untitled")
-        if st.button(f"🗂️ {title}", key=f"chat_{sid}", use_container_width=True):
+        if st.button(title, key=f"chat_{sid}", use_container_width=True):
             st.session_state.chat_id = sid
             st.rerun()
 
@@ -80,12 +80,15 @@ with st.sidebar:
     st.write(f"**Model:** `{settings.model_name}`")
     st.write(f"**Memory Window:** `{settings.max_memory_messages}`")
 
-st.markdown('<div class="chat-title">🤖 Kivyx AI Agent</div>', unsafe_allow_html=True)
 st.markdown(
-    '<div class="muted">Smart, tool-enabled, memory-aware assistant</div>',
+    (
+        '<div class="topbar">'
+        '<div class="topbar-title">Kivyx AI Agent</div>'
+        '<div class="topbar-subtitle">Smart, tool-enabled, memory-aware assistant</div>'
+        "</div>"
+    ),
     unsafe_allow_html=True,
 )
-st.markdown("")
 
 messages = memory.get_messages(st.session_state.chat_id)
 for m in messages:

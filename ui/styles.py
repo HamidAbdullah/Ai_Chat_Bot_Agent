@@ -7,67 +7,112 @@ def get_custom_css() -> str:
     return """
     <style>
     :root {
-        --bg: #0b1020;
-        --card: #121a2f;
-        --text: #e6ebff;
-        --muted: #9ca8d4;
-        --accent: #7c9cff;
-        --border: #233056;
+        --bg: #111827;
+        --surface: #1f2937;
+        --surface-soft: #273244;
+        --text: #eceff4;
+        --muted: #aab3c5;
+        --accent: #10a37f;
+        --border: #334155;
     }
 
     .stApp {
-        background: radial-gradient(1200px 800px at 10% -20%, #1a2445 0%, var(--bg) 45%);
+        background: var(--bg);
         color: var(--text);
     }
 
     .main .block-container {
-        max-width: 900px;
-        padding-top: 1.2rem;
-        padding-bottom: 6rem;
+        max-width: 860px;
+        padding-top: 0.8rem;
+        padding-bottom: 8rem;
     }
 
     [data-testid="stSidebar"] {
-        background: #0f1730;
+        background: #171f2d;
         border-right: 1px solid var(--border);
     }
 
-    .chat-title {
-        font-size: 1.3rem;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 0.6rem;
+    .topbar {
+        position: sticky;
+        top: 0;
+        z-index: 100;
+        backdrop-filter: blur(8px);
+        background: rgba(17, 24, 39, 0.75);
+        border-bottom: 1px solid var(--border);
+        padding: 0.8rem 0;
+        margin: -0.5rem 0 0.8rem 0;
     }
 
-    .muted {
+    .topbar-title {
+        font-size: 1rem;
+        font-weight: 700;
+        color: var(--text);
+        margin: 0;
+    }
+
+    .topbar-subtitle {
         color: var(--muted);
-        font-size: 0.92rem;
+        font-size: 0.86rem;
+        margin-top: 0.2rem;
     }
 
     div[data-testid="stChatMessage"] {
-        border: 1px solid var(--border);
+        border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 14px;
-        background: rgba(18, 26, 47, 0.7);
-        padding: 0.35rem 0.35rem;
+        background: var(--surface);
+        padding: 0.4rem 0.45rem;
+        margin-bottom: 0.45rem;
+    }
+
+    div[data-testid="stChatMessage"] p {
+        line-height: 1.6;
+        font-size: 0.96rem;
+    }
+
+    .stChatMessage [data-testid="stMarkdownContainer"] > p:last-child {
+        margin-bottom: 0.15rem;
+    }
+
+    div[data-testid="stChatMessageAvatarUser"] + div[data-testid="stChatMessageContent"] {
+        background: linear-gradient(180deg, #1f2a3d, #1b2434);
     }
 
     .stButton button {
-        border-radius: 10px;
+        border-radius: 9px;
         border: 1px solid var(--border);
-        background: #182343;
+        background: var(--surface-soft);
         color: var(--text);
+        height: 2.35rem;
     }
 
     .stButton button:hover {
-        border-color: var(--accent);
-        color: white;
+        border-color: #4f9;
+        transform: translateY(-1px);
     }
 
     [data-testid="stChatInput"] {
         position: fixed;
-        bottom: 0.9rem;
+        bottom: 0.95rem;
         left: min(26%, 320px);
-        right: 1.2rem;
+        right: 1rem;
         z-index: 999;
+    }
+
+    [data-testid="stChatInput"] > div {
+        background: rgba(17, 24, 39, 0.92);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 0.25rem;
+        box-shadow: 0 8px 24px rgba(0, 0, 0, 0.35);
+    }
+
+    [data-testid="stChatInput"] textarea {
+        color: var(--text);
+    }
+
+    [data-testid="stSidebar"] .stMarkdown h2,
+    [data-testid="stSidebar"] .stMarkdown h3 {
+        color: var(--text);
     }
 
     @media (max-width: 900px) {
